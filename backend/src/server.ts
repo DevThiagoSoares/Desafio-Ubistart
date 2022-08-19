@@ -8,7 +8,7 @@ dotenv.config();
 const port = process.env.PORT;
 
 const user = process.env.USER;
-const password = process.env.PWD;
+const password = process.env.PASSWORD;
 
 
 // conectar com mongoose
