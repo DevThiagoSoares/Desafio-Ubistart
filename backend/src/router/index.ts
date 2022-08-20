@@ -4,12 +4,12 @@ import bcrypt from 'bcrypt';
 import jwt, { Secret } from 'jsonwebtoken';
 
 import dotenv from 'dotenv';
+import { Task } from '../model/Task';
 dotenv.config();
 
 export const router = Router();
 
 router.get('/', (req, res) => res.send('API Desafiuo Ubistart'));
-router.get('/task', (req, res) => res.send('task'));
 
 // Regiter User
 router.post('/auth/register', async (req, res) => {
@@ -49,7 +49,7 @@ router.post('/auth/register', async (req, res) => {
 
     try {
         await user.save()
-        res.status(201).json({ mensage: 'Usuario criado com sucesso!' });
+        res.status(201).json({ mensage: 'Tarefa inserida!' });
     } catch (error) {
         console.log(error)
         res.status(500).json({ mensage: 'Erro no servidor' });
@@ -95,19 +95,19 @@ router.post('/auth/login', async (req, res) => {
         res.status(200).json({ mensage: 'Autenticação realizada com sucesso', token });
 
     } catch (error) {
-    console.log(error)
-    res.status(500).json({ mensage: 'Erro no servidor' });
-}
+        console.log(error)
+        res.status(500).json({ mensage: 'Erro no servidor' });
+    }
 })
 
 // Perfil User
-router.get('/user/:id', checkToken ,async (req, res) => {
+router.get('/user/:id', checkToken, async (req, res) => {
     const id = req.params.id;
 
     // 
     const user = await User.findById(id, '-password');
 
-    if(!user) {
+    if (!user) {
         return res.status(404).json({ mensage: 'Usuario não encontrado!' });
     }
     res.status(200).json({ user });
@@ -119,8 +119,8 @@ function checkToken(req: Request, res: Response, next: NextFunction) {
     const authHeader = req.headers['authorization'];
     const token = authHeader && authHeader.split(' ')[1];
 
-    if(!token) {
-        return res.status(401).json({mensage: 'Acesso negado!'});
+    if (!token) {
+        return res.status(401).json({ mensage: 'Acesso negado!' });
     }
 
     try {
@@ -136,3 +136,22 @@ function checkToken(req: Request, res: Response, next: NextFunction) {
         res.status(400).json({ mensage: 'Erro no servidor' });
     }
 }
+
+router.route('/task').post(async (req, res) => {
+    const { title, description } = req.body;
+    const newTask = new Task({title, description})
+    await newTask.save();
+    res.send('saveed')
+    
+})
+
+router.get('/task/all', async (req, res) => {
+    try {
+        // lendo dados
+        const task = await Task.find();
+        res.status(200).json(task);
+    } catch (error) {
+        res.status(500).json({ error: error });
+    }
+
+})
