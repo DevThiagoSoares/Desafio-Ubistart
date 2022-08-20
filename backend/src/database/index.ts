@@ -4,14 +4,14 @@ const dotenv = require('dotenv');
 
 dotenv.config();
 
-const user = process.env.USER;
-const password = process.env.PASSWORD;
+const user = process.env.DB_USER;
+const password = process.env.DB_PASSWORD;
 
 
 export default function connectMongoDB(): void{
     mongoose.connect(
-    `mongodb+srv://${user}:${password}@todo.h7qjfhl.mongodb.net/?retryWrites=true&w=majority`
-    // `mongodb+srv://todo-ubistart:f4NELHZBcJpyt128@todo.h7qjfhl.mongodb.net/?retryWrites=true&w=majority`
+        `mongodb+srv://${user}:${password}@cluster0.bma9qoo.mongodb.net/?retryWrites=true&w=majority`
+        // 'mongodb+srv://test-ubistart:UmSmBmdbj720PCGF@cluster0.bma9qoo.mongodb.net/?retryWrites=true&w=majority'
 )
     .then(() => {
         console.log('MongoDB conectaado');
