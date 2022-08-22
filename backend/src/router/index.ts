@@ -84,7 +84,7 @@ router.post('/auth/login', async (req, res) => {
     try {
 
         // verificar porque env nao funciona
-        const secret = "eyJhbGciOiJIUzI1NiJ9eyJSb2xlIjoiQWRtaW4iLCJJc3N"
+        const secret: any = process.env.SECRET
 
         const token = jwt.sign(
             {
