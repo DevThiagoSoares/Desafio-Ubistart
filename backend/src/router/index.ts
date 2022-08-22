@@ -49,7 +49,7 @@ router.post('/auth/register', async (req, res) => {
 
     try {
         await user.save()
-        res.status(201).json({ mensage: 'Tarefa inserida!' });
+        res.status(201).json({ mensage: 'Usuario criado com sucesso!' });
     } catch (error) {
         console.log(error)
         res.status(500).json({ mensage: 'Erro no servidor' });
@@ -155,3 +155,14 @@ router.get('/task/all', async (req, res) => {
     }
 
 })
+
+// router.get('/user/all', async (req, res) => {
+//     try {
+//         // lendo dados
+//         const user = await User.find();
+//         res.status(200).json(user);
+//     } catch (error) {
+//         res.status(500).json({ error: error });
+//     }
+
+// })
