@@ -19,6 +19,7 @@ router.get('/', (req, res) => res.send('API Desafiuo Ubistart'));
 
 
 // Regiter User
+// validação 
 router.post('/auth/register', async (req, res) => {
     const { name, email, password, confirmPassword } = req.body;
     
@@ -83,13 +84,24 @@ router.post('/auth/register', async (req, res) => {
 router.post('/auth/login', async (req, res) => {
     const { email, password } = req.body;
 
+    const validation = req.body
+
+
+    validation.forEach(function (value) {
+        console.log(value)
+        if (!value) {
+            return res.status(422).json({ mensage: `O ${value} é obrigatorio` });
+        }
+    });
+
+
     // validação
-    if (!email) {
-        return res.status(422).json({ mensage: 'O email é obrigatorio' });
-    }
-    if (!password) {
-        return res.status(422).json({ mensage: 'A senha é obrigatorio' });
-    }
+    // if (!email) {
+    //     return res.status(422).json({ mensage: 'O email é obrigatorio' });
+    // }
+    // if (!password) {
+    //     return res.status(422).json({ mensage: 'A senha é obrigatorio' });
+    // }
 
     //verificar Usuario 
     const user = await User.findOne({ email: email });
