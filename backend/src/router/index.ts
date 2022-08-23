@@ -1,7 +1,7 @@
 import { Request, Response, NextFunction, Router } from 'express';
 import { User } from '../model/User';
 import bcrypt from 'bcrypt';
-import jwt, { Secret } from 'jsonwebtoken';
+import jwt from 'jsonwebtoken';
 
 import dotenv from 'dotenv';
 import { Task } from '../model/Task';
@@ -11,23 +11,40 @@ export const router = Router();
 
 router.get('/', (req, res) => res.send('API Desafiuo Ubistart'));
 
+
+
+
+
+
+
+
 // Regiter User
 router.post('/auth/register', async (req, res) => {
     const { name, email, password, confirmPassword } = req.body;
-
+    
+    const validation = ['name', 'email', 'password', 'confirmPassword']
+    
+    
+    validation.forEach(function (value) {
+        console.log(value)
+        if (!value) {
+            return res.status(422).json({ mensage: `O ${value} é obrigatorio` });
+        }
+    });
+    
     // validações
-    if (!name) {
-        return res.status(422).json({ mensage: 'O nome é obrigatorio' });
-    }
-    if (!email) {
-        return res.status(422).json({ mensage: 'O email é obrigatorio' });
-    }
-    if (!password) {
-        return res.status(422).json({ mensage: 'A senha é obrigatorio' });
-    }
-    if (password !== confirmPassword) {
-        return res.status(422).json({ mensage: 'As senhas não conferem' });
-    }
+    // if (!name) {
+    //     return res.status(422).json({ mensage: 'O nome é obrigatorio' });
+    // }
+    // if (!email) {
+    //     return res.status(422).json({ mensage: 'O email é obrigatorio' });
+    // }
+    // if (!password) {
+    //     return res.status(422).json({ mensage: 'A senha é obrigatorio' });
+    // }
+    // if (password !== confirmPassword) {
+    //     return res.status(422).json({ mensage: 'As senhas não conferem' });
+    // }
 
     //verificar Usuario por Email
     const userExists = await User.findOne({ email: email })
@@ -56,6 +73,11 @@ router.post('/auth/register', async (req, res) => {
     }
 
 });
+
+
+
+
+
 
 // Login User
 router.post('/auth/login', async (req, res) => {
