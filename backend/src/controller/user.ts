@@ -4,10 +4,7 @@ import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
 
 import dotenv from 'dotenv';
-import { Task } from '../model/Task';
 dotenv.config();
-
-
 
 
 export const Register = async (req: Request, res: Response) => {
@@ -69,15 +66,6 @@ export const Login = async (req: Request, res: Response) => {
         }
     });
 
-
-    // validação
-    // if (!email) {
-    //     return res.status(422).json({ mensage: 'O email é obrigatorio' });
-    // }
-    // if (!password) {
-    //     return res.status(422).json({ mensage: 'A senha é obrigatorio' });
-    // }
-
     //verificar Usuario 
     const user = await User.findOne({ email: email });
     if (!user) {
@@ -92,7 +80,6 @@ export const Login = async (req: Request, res: Response) => {
 
     try {
 
-        // verificar porque env nao funciona
         const secret: any = process.env.SECRET
 
         const token = jwt.sign(
@@ -120,8 +107,7 @@ export function checkToken(req: Request, res: Response, next: NextFunction) {
 
     try {
 
-        // verificar porque env nao funciona
-        const secret = "eyJhbGciOiJIUzI1NiJ9eyJSb2xlIjoiQWRtaW4iLCJJc3N"
+        const secret: any = process.env.SECRET
         jwt.verify(token, secret);
 
         next();
@@ -130,25 +116,6 @@ export function checkToken(req: Request, res: Response, next: NextFunction) {
         console.log(error)
         res.status(400).json({ mensage: 'Erro no servidor' });
     }
-}
-
-export const TaskPost = async (req: Request, res: Response) => {
-    const { title, description } = req.body;
-    const newTask = new Task({ title, description })
-    await newTask.save();
-    res.send('saveed')
-
-}
-
-export const TaskAll = async (req: Request, res: Response) => {
-    try {
-        // lendo dados
-        const task = await Task.find();
-        res.status(200).json(task);
-    } catch (error) {
-        res.status(500).json({ error: error });
-    }
-
 }
 
 export const UserId = async (req: Request, res: Response) => {
@@ -162,3 +129,4 @@ export const UserId = async (req: Request, res: Response) => {
     }
     res.status(200).json({ user });
 }
+

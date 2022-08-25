@@ -1,7 +1,8 @@
 import {  Router } from 'express';
 
 import dotenv from 'dotenv';
-import { checkToken, Login, Register, TaskAll, TaskPost, UserId } from '../controller';
+import { checkToken, Login, Register, UserId } from '../controller/user';
+import { TaskAll, TaskPost, DeleteTask, EditTask } from '../controller/task';
 dotenv.config();
 
 export const router = Router();
@@ -18,3 +19,7 @@ router.get('/user/:id', checkToken, UserId)
 router.route('/task').post(TaskPost)
 // Todas as tarefas
 router.get('/task/all', TaskAll)
+// deletar tarefa
+router.delete('/task/delete/:id', DeleteTask)
+// Editar Tarefa
+router.patch('/task/edit/:id', EditTask)
